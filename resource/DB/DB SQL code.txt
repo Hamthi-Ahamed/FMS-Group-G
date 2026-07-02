@@ -1,0 +1,175 @@
+
+CREATE TABLE users (
+    id         INT          PRIMARY KEY AUTO_INCREMENT,
+    username   VARCHAR(100) NOT NULL UNIQUE,
+    password   VARCHAR(255) NOT NULL,           -- store hashed value
+    role       ENUM('Admin','Student','Lecturer') NOT NULL,
+    created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE departments (
+    id             INT          PRIMARY KEY AUTO_INCREMENT,
+    name           VARCHAR(100) NOT NULL UNIQUE,
+    hod_lecturer_id INT          DEFAULT NULL,   -- FK added after LECTURERS
+    no_of_staff    INT          DEFAULT 0
+);
+
+
+CREATE TABLE degrees (
+    id             INT          PRIMARY KEY AUTO_INCREMENT,
+    name           VARCHAR(100) NOT NULL UNIQUE,
+    department_id  INT          NOT NULL,
+    no_of_students INT          DEFAULT 0,
+    CONSTRAINT fk_degree_dept
+        FOREIGN KEY (department_id) REFERENCES departments(id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+CREATE TABLE lecturers (
+    id            INT          PRIMARY KEY AUTO_INCREMENT,
+    user_id       INT          NOT NULL UNIQUE,
+    full_name     VARCHAR(100) NOT NULL,
+    email         VARCHAR(150) NOT NULL UNIQUE,
+    mobile_number VARCHAR(20),
+    department_id INT          NOT NULL,
+    CONSTRAINT fk_lecturer_user
+        FOREIGN KEY (user_id)       REFERENCES users(id)
+        ON DELETE CASCADE  ON UPDATE CASCADE,
+    CONSTRAINT fk_lecturer_dept
+        FOREIGN KEY (department_id) REFERENCES departments(id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+ALTER TABLE departments
+    ADD CONSTRAINT fk_dept_hod
+        FOREIGN KEY (hod_lecturer_id) REFERENCES lecturers(id)
+        ON DELETE SET NULL ON UPDATE CASCADE;
+
+
+CREATE TABLE students (
+    id            INT          PRIMARY KEY AUTO_INCREMENT,
+    user_id       INT          NOT NULL UNIQUE,
+    student_id    VARCHAR(30)  NOT NULL UNIQUE,  -- e.g. ET/2022/011
+    full_name     VARCHAR(100) NOT NULL,
+    email         VARCHAR(150) NOT NULL UNIQUE,
+    mobile_number VARCHAR(20),
+    degree_id     INT          NOT NULL,
+    CONSTRAINT fk_student_user
+        FOREIGN KEY (user_id)   REFERENCES users(id)
+        ON DELETE CASCADE  ON UPDATE CASCADE,
+    CONSTRAINT fk_student_degree
+        FOREIGN KEY (degree_id) REFERENCES degrees(id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+CREATE TABLE courses (
+    id          INT          PRIMARY KEY AUTO_INCREMENT,
+    course_code VARCHAR(20)  NOT NULL UNIQUE,    -- e.g. ETEC 21062
+    course_name VARCHAR(150) NOT NULL,
+    credits     INT          NOT NULL DEFAULT 2,
+    lecturer_id INT          NOT NULL,
+    CONSTRAINT fk_course_lecturer
+        FOREIGN KEY (lecturer_id) REFERENCES lecturers(id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+CREATE TABLE enrollments (
+    id         INT         PRIMARY KEY AUTO_INCREMENT,
+    student_id INT         NOT NULL,
+    course_id  INT         NOT NULL,
+    grade      VARCHAR(5)  DEFAULT NULL,         -- e.g. A+, B, C
+    enrolled_at TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_enroll_student
+        FOREIGN KEY (student_id) REFERENCES students(id)
+        ON DELETE CASCADE  ON UPDATE CASCADE,
+    CONSTRAINT fk_enroll_course
+        FOREIGN KEY (course_id)  REFERENCES courses(id)
+        ON DELETE CASCADE  ON UPDATE CASCADE,
+    CONSTRAINT uq_enrollment UNIQUE (student_id, course_id)
+);
+
+
+CREATE TABLE timetable (
+    id        INT  PRIMARY KEY AUTO_INCREMENT,
+    course_id INT  NOT NULL,
+    day       ENUM('Monday','Tuesday','Wednesday','Thursday','Friday') NOT NULL,
+    time_slot VARCHAR(10) NOT NULL,              -- e.g. 08:00, 10:00
+    CONSTRAINT fk_timetable_course
+        FOREIGN KEY (course_id) REFERENCES courses(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT uq_timetable UNIQUE (day, time_slot, course_id)
+);
+
+
+
+
+
+
+INSERT INTO users (username, password, role) VALUES
+    ('Kumar Sangakkara', 'hashed_password_1', 'Student'),
+    ('Mithali Raj',      'hashed_password_2', 'Lecturer'),
+    ('admin',            'hashed_password_3', 'Admin');
+
+INSERT INTO departments (name, no_of_staff) VALUES
+    ('Applied Computing',        15),
+    ('Software Engineering',     17),
+    ('Computer Systems Engineering', 12);
+
+INSERT INTO degrees (name, department_id, no_of_students) VALUES
+    ('Engineering Technology',  1, 375),
+    ('Information Technology',  2, 375),
+    ('Computer Science',        3, 325),
+    ('Bio Systems Technology',  1,  75);
+
+INSERT INTO lecturers (user_id, full_name, email, mobile_number, department_id) VALUES
+    (2, 'Mithali Raj', 'mithalir@kln.ac.lk', '9876543210', 1);
+
+UPDATE departments SET hod_lecturer_id = 1 WHERE id IN (1, 2, 3);
+
+INSERT INTO students (user_id, student_id, full_name, email, mobile_number, degree_id) VALUES
+    (1, 'ET/2022/011', 'Kumar Sangakkara', 'kumars-et22011@stu.kln.ac.lk', '0123456789', 1);
+
+INSERT INTO courses (course_code, course_name, credits, lecturer_id) VALUES
+    ('ETEC 21062', 'OOP', 2, 1),
+    ('ETEC 21052', 'OOP', 2, 1),
+    ('ETEC 21042', 'OOP', 2, 1),
+    ('ETEC 21032', 'OOP', 2, 1),
+    ('ETEC 21022', 'OOP', 2, 1),
+    ('ETEC 21012', 'OOP', 2, 1),
+    ('CSCI 21052', 'SE',  2, 1),
+    ('CSCI 21042', 'SE',  2, 1);
+
+INSERT INTO enrollments (student_id, course_id, grade) VALUES
+    (1, 1, 'A+'),
+    (1, 2, 'B'),
+    (1, 3, 'A'),
+    (1, 4, 'D'),
+    (1, 5, 'C'),
+    (1, 6, 'B');
+
+INSERT INTO timetable (course_id, day, time_slot) VALUES
+    (1, 'Monday',    '08:00'),
+    (1, 'Tuesday',   '08:00'),
+    (1, 'Wednesday', '08:00'),
+    (1, 'Thursday',  '08:00'),
+    (1, 'Friday',    '08:00'),
+    (1, 'Monday',    '10:00'),
+    (1, 'Tuesday',   '10:00'),
+    (1, 'Wednesday', '10:00'),
+    (1, 'Thursday',  '10:00'),
+    (1, 'Friday',    '10:00'),
+    (7, 'Monday',    '13:00'),
+    (7, 'Wednesday', '13:00'),
+    (7, 'Thursday',  '13:00'),
+    (7, 'Friday',    '13:00'),
+    (1, 'Tuesday',   '13:00'),
+    (7, 'Monday',    '15:00'),
+    (7, 'Wednesday', '15:00'),
+    (7, 'Thursday',  '15:00'),
+    (7, 'Friday',    '15:00'),
+    (1, 'Tuesday',   '15:00');
