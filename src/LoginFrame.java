@@ -8,27 +8,22 @@ public class LoginFrame extends JFrame implements ActionListener {
     private static final int FRAME_WIDTH = 940;
     private static final int FRAME_HEIGHT = 560;
 
-    // Right-side form fields
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
 
-    // Labels that move in Sign Up mode
     private JLabel usernameLabel;
     private JLabel passwordLabel;
     private JLabel confirmPasswordLabel;
     private JLabel roleLabel;
 
-    // true = Sign Up mode
     private boolean signUpMode = false;
 
-    // Role selector buttons
     private JButton adminButton;
     private JButton studentButton;
     private JButton lecturerButton;
     private String selectedRole = "Admin";
 
-    // Tabs
     private JButton signInTab;
     private JButton signUpTab;
     private JPanel underline;
@@ -47,28 +42,26 @@ public class LoginFrame extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(buildLeftPanel(), BorderLayout.WEST);
-        getContentPane().add(buildRightPanel(), BorderLayout.CENTER);
-    }
+        getContentPane().add(buildRightPanel(), BorderLayout.CENTER);}
 
 
     private JPanel buildLeftPanel() {
-        JPanel p = new JPanel(null);
+        JPanel p =new JPanel(null);
         p.setPreferredSize(new Dimension(370, FRAME_HEIGHT));
         p.setBackground(THEME_PURPLE);
-
-        JLabel cap = new JLabel("🎓", SwingConstants.CENTER);
+        JLabel cap =new JLabel("🎓", SwingConstants.CENTER);
         cap.setFont(new Font("SansSerif", Font.PLAIN, 80));
         cap.setForeground(Color.WHITE);
         cap.setBounds(0, 80, 370, 110);
         p.add(cap);
 
-        JLabel title1 = new JLabel("Faculty Management", SwingConstants.CENTER);
+        JLabel title1=new JLabel("Faculty Management", SwingConstants.CENTER);
         title1.setFont(new Font("Arial", Font.BOLD, 26));
         title1.setForeground(Color.WHITE);
         title1.setBounds(15, 190, 340, 35);
         p.add(title1);
 
-        JLabel title2 = new JLabel("System", SwingConstants.CENTER);
+        JLabel title2= new JLabel("System", SwingConstants.CENTER);
         title2.setFont(new Font("Arial", Font.BOLD, 26));
         title2.setForeground(Color.WHITE);
         title2.setBounds(15, 225, 340, 35);
@@ -85,18 +78,14 @@ public class LoginFrame extends JFrame implements ActionListener {
         sub.setForeground(new Color(230, 225, 250));
         sub.setBounds(15, 410, 340, 20);
         p.add(sub);
+        return p;}
 
-        return p;
-    }
-
-
-    private JPanel buildRightPanel() {
-        JPanel p = new JPanel(null);
+    private JPanel buildRightPanel(){
+        JPanel p=new JPanel(null);
         p.setPreferredSize(new Dimension(FRAME_WIDTH - 370, FRAME_HEIGHT));
         p.setBackground(Color.WHITE);
 
-
-        signInTab = new JButton("Sign In");
+        signInTab=new JButton("Sign In");
         signInTab.setFont(new Font("Arial", Font.BOLD, 18));
         signInTab.setForeground(THEME_PURPLE);
         signInTab.setBorderPainted(false);
@@ -106,7 +95,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         signInTab.addActionListener(this);
         p.add(signInTab);
 
-        signUpTab = new JButton("Sign Up");
+        signUpTab=new JButton("Sign Up");
         signUpTab.setFont(new Font("Arial", Font.BOLD, 18));
         signUpTab.setForeground(Color.GRAY);
         signUpTab.setBorderPainted(false);
@@ -116,13 +105,13 @@ public class LoginFrame extends JFrame implements ActionListener {
         signUpTab.addActionListener(this);
         p.add(signUpTab);
 
-        underline = new JPanel();
+        underline=new JPanel();
         underline.setBackground(THEME_PURPLE);
         underline.setBounds(60, 62, 110, 3);
         p.add(underline);
 
 
-        usernameLabel = new JLabel("Username");
+        usernameLabel=new JLabel("Username");
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 15));
         usernameLabel.setForeground(THEME_PURPLE);
         usernameLabel.setBounds(60, 90, 200, 25);
@@ -135,13 +124,13 @@ public class LoginFrame extends JFrame implements ActionListener {
         p.add(usernameField);
 
 
-        passwordLabel = new JLabel("Password");
+        passwordLabel=new JLabel("Password");
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 15));
         passwordLabel.setForeground(THEME_PURPLE);
         passwordLabel.setBounds(60, 175, 200, 25);
         p.add(passwordLabel);
 
-        passwordField = new JPasswordField();
+        passwordField=new JPasswordField();
         passwordField.setFont(new Font("Arial", Font.PLAIN, 15));
         passwordField.setBounds(60, 203, 450, 40);
         passwordField.setEchoChar('*');
@@ -149,14 +138,14 @@ public class LoginFrame extends JFrame implements ActionListener {
         p.add(passwordField);
 
 
-        confirmPasswordLabel = new JLabel("Confirm Password");
+        confirmPasswordLabel=new JLabel("Confirm Password");
         confirmPasswordLabel.setFont(new Font("Arial", Font.BOLD, 15));
         confirmPasswordLabel.setForeground(THEME_PURPLE);
         confirmPasswordLabel.setBounds(60, 260, 250, 25);
         confirmPasswordLabel.setVisible(false);
         p.add(confirmPasswordLabel);
 
-        confirmPasswordField = new JPasswordField();
+        confirmPasswordField=new JPasswordField();
         confirmPasswordField.setFont(new Font("Arial", Font.PLAIN, 15));
         confirmPasswordField.setBounds(60, 288, 450, 40);
         confirmPasswordField.setEchoChar('*');
@@ -165,32 +154,32 @@ public class LoginFrame extends JFrame implements ActionListener {
         p.add(confirmPasswordField);
 
 
-        roleLabel = new JLabel("Role");
+        roleLabel=new JLabel("Role");
         roleLabel.setFont(new Font("Arial", Font.BOLD, 15));
         roleLabel.setForeground(THEME_PURPLE);
         roleLabel.setBounds(60, 260, 200, 25);
         p.add(roleLabel);
 
-        adminButton = new JButton("Admin");
+        adminButton=new JButton("Admin");
         styleRoleButton(adminButton, true);
         adminButton.setBounds(60, 288, 100, 35);
         adminButton.addActionListener(this);
         p.add(adminButton);
 
-        studentButton = new JButton("Student");
+        studentButton=new JButton("Student");
         styleRoleButton(studentButton, false);
         studentButton.setBounds(175, 288, 100, 35);
         studentButton.addActionListener(this);
         p.add(studentButton);
 
-        lecturerButton = new JButton("Lecturer");
+        lecturerButton=new JButton("Lecturer");
         styleRoleButton(lecturerButton, false);
         lecturerButton.setBounds(290, 288, 100, 35);
         lecturerButton.addActionListener(this);
         p.add(lecturerButton);
 
 
-        signInButton = new JButton("Sign In");
+        signInButton=new JButton("Sign In");
         signInButton.setFont(new Font("Arial", Font.BOLD, 17));
         signInButton.setForeground(Color.WHITE);
         signInButton.setBackground(THEME_PURPLE);
@@ -198,7 +187,6 @@ public class LoginFrame extends JFrame implements ActionListener {
         signInButton.setBounds(60, 350, 450, 45);
         signInButton.addActionListener(this);
         p.add(signInButton);
-
         applyFormLayout();
         return p;
     }
@@ -255,8 +243,6 @@ public class LoginFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
-
-
         if (src == adminButton) {
             selectedRole = "Admin";
             styleRoleButton(adminButton, true);
@@ -286,8 +272,6 @@ public class LoginFrame extends JFrame implements ActionListener {
             }
         }
     }
-
-
     private void handleSignIn() {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
@@ -296,14 +280,12 @@ public class LoginFrame extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Please enter both username and password.");
             return;
         }
-
         String roleFromDB = DBConnector.verifyLogin(username, password);
         if (roleFromDB == null) {
             JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         if (!roleFromDB.equalsIgnoreCase(selectedRole)) {
             JOptionPane.showMessageDialog(this,
                     "You selected role \"" + selectedRole + "\" but your account role is \"" + roleFromDB + "\".\n" +
@@ -311,7 +293,6 @@ public class LoginFrame extends JFrame implements ActionListener {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         dispose();
         switch (roleFromDB) {
             case "Student":
@@ -327,8 +308,6 @@ public class LoginFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Unknown role: " + roleFromDB);
         }
     }
-
-
     private void handleSignUp() {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
@@ -338,12 +317,10 @@ public class LoginFrame extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.");
             return;
         }
-
         if (!password.equals(confirmPassword)) {
             JOptionPane.showMessageDialog(this, "Passwords do not match.");
             return;
         }
-
         boolean success = DBConnector.registerUser(username, password, selectedRole);
         if (success) {
             JOptionPane.showMessageDialog(this,
@@ -359,8 +336,6 @@ public class LoginFrame extends JFrame implements ActionListener {
                     "Registration Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-
      public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));
      }
