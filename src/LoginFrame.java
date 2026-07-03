@@ -3,17 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/*
- * LoginFrame
- * ----------
- * Faculty Management System - Login Page
- *
- * Sign In verifies username + password via DBConnector.verifyLogin()
- * then opens the correct dashboard based on the role returned.
- * Sign Up inserts a new row via DBConnector.registerUser().
- *
- * This class is kept with the same login flow as the uploaded LoginFrame.
- */
+
 public class LoginFrame extends JFrame implements ActionListener {
     private static final int FRAME_WIDTH = 940;
     private static final int FRAME_HEIGHT = 560;
@@ -43,7 +33,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     private JButton signUpTab;
     private JPanel underline;
 
-    // Main action button
+
     private JButton signInButton;
 
     private final Color THEME_PURPLE = new Color(98, 60, 234);
@@ -60,9 +50,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         getContentPane().add(buildRightPanel(), BorderLayout.CENTER);
     }
 
-    // ---------------------------------------------------------------
-    // LEFT PANEL – purple branding
-    // ---------------------------------------------------------------
+
     private JPanel buildLeftPanel() {
         JPanel p = new JPanel(null);
         p.setPreferredSize(new Dimension(370, FRAME_HEIGHT));
@@ -101,15 +89,13 @@ public class LoginFrame extends JFrame implements ActionListener {
         return p;
     }
 
-    // ---------------------------------------------------------------
-    // RIGHT PANEL – form
-    // ---------------------------------------------------------------
+
     private JPanel buildRightPanel() {
         JPanel p = new JPanel(null);
         p.setPreferredSize(new Dimension(FRAME_WIDTH - 370, FRAME_HEIGHT));
         p.setBackground(Color.WHITE);
 
-        // ---- Tabs ----
+
         signInTab = new JButton("Sign In");
         signInTab.setFont(new Font("Arial", Font.BOLD, 18));
         signInTab.setForeground(THEME_PURPLE);
@@ -135,7 +121,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         underline.setBounds(60, 62, 110, 3);
         p.add(underline);
 
-        // ---- Username ----
+
         usernameLabel = new JLabel("Username");
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 15));
         usernameLabel.setForeground(THEME_PURPLE);
@@ -148,7 +134,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         usernameField.setBorder(BorderFactory.createLineBorder(THEME_PURPLE, 2, true));
         p.add(usernameField);
 
-        // ---- Password ----
+
         passwordLabel = new JLabel("Password");
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 15));
         passwordLabel.setForeground(THEME_PURPLE);
@@ -162,7 +148,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         passwordField.setBorder(BorderFactory.createLineBorder(THEME_PURPLE, 2, true));
         p.add(passwordField);
 
-        // ---- Confirm Password (Sign Up only) ----
+
         confirmPasswordLabel = new JLabel("Confirm Password");
         confirmPasswordLabel.setFont(new Font("Arial", Font.BOLD, 15));
         confirmPasswordLabel.setForeground(THEME_PURPLE);
@@ -178,7 +164,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         confirmPasswordField.setVisible(false);
         p.add(confirmPasswordField);
 
-        // ---- Role ----
+
         roleLabel = new JLabel("Role");
         roleLabel.setFont(new Font("Arial", Font.BOLD, 15));
         roleLabel.setForeground(THEME_PURPLE);
@@ -203,7 +189,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         lecturerButton.addActionListener(this);
         p.add(lecturerButton);
 
-        // ---- Sign In / Sign Up button ----
+
         signInButton = new JButton("Sign In");
         signInButton.setFont(new Font("Arial", Font.BOLD, 17));
         signInButton.setForeground(Color.WHITE);
@@ -265,14 +251,12 @@ public class LoginFrame extends JFrame implements ActionListener {
         repaint();
     }
 
-    // ---------------------------------------------------------------
-    // ActionListener
-    // ---------------------------------------------------------------
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object src = e.getSource();
 
-        // Role buttons
+
         if (src == adminButton) {
             selectedRole = "Admin";
             styleRoleButton(adminButton, true);
@@ -303,9 +287,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         }
     }
 
-    // ---------------------------------------------------------------
-    // Sign In – verify against DB then open matching dashboard
-    // ---------------------------------------------------------------
+
     private void handleSignIn() {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
@@ -346,9 +328,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         }
     }
 
-    // ---------------------------------------------------------------
-    // Sign Up – insert new user into DB
-    // ---------------------------------------------------------------
+
     private void handleSignUp() {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
@@ -380,10 +360,8 @@ public class LoginFrame extends JFrame implements ActionListener {
         }
     }
 
-    // ---------------------------------------------------------------
-    // Entry point (enable this if you want to run this file directly)
-    // ---------------------------------------------------------------
-    // public static void main(String[] args) {
-    //     SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));
-    // }
+
+     public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));
+     }
 }
