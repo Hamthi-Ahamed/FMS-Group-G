@@ -336,7 +336,4 @@ public class LoginFrame extends JFrame implements ActionListener {
                     "Registration Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
-     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));
-     }
 }
